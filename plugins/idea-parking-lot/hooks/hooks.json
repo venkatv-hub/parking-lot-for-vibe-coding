@@ -1,0 +1,16 @@
+{
+  "description": "Catches \"idea: ...\" and other parking-lot commands before the prompt reaches the AI.",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/capture.js\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

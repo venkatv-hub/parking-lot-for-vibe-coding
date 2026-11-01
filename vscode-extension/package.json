@@ -1,0 +1,129 @@
+{
+  "name": "idea-parking-lot",
+  "displayName": "Idea Parking Lot for Vibe Coding",
+  "description": "Park ideas while you code with AI. They stay out of the chat until you click one to send it to Claude Code, Codex, Copilot or your terminal.",
+  "version": "0.1.0",
+  "publisher": "venkatv",
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "repository": { "type": "git", "url": "https://github.com/venkatv/idea-parking-lot.git" },
+  "engines": { "vscode": "^1.90.0" },
+  "categories": ["AI", "Chat", "Other"],
+  "keywords": ["claude", "claude code", "codex", "copilot", "ideas", "backlog", "vibe coding", "agent"],
+  "main": "./extension.js",
+  "activationEvents": ["onStartupFinished"],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        { "id": "ideaParkingLot", "title": "Idea Parking Lot", "icon": "media/sidebar.svg" }
+      ]
+    },
+    "views": {
+      "ideaParkingLot": [
+        { "id": "ideaParkingLot.ideas", "name": "Ideas", "icon": "media/sidebar.svg", "contextualTitle": "Idea Parking Lot" }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "ideaParkingLot.ideas",
+        "contents": "Nothing parked yet.\n[$(add) Park an idea](command:ideaParkingLot.add)\nIdeas are saved to .ideas/backlog.md in your project. Your AI never sees them until you click one to send it.",
+        "when": "workspaceFolderCount > 0"
+      },
+      {
+        "view": "ideaParkingLot.ideas",
+        "contents": "Open a folder to start parking ideas.",
+        "when": "workspaceFolderCount == 0"
+      }
+    ],
+    "commands": [
+      { "command": "ideaParkingLot.add", "title": "Park an Idea", "category": "Idea Parking Lot", "icon": "$(add)" },
+      { "command": "ideaParkingLot.addFromSelection", "title": "Park Selection as Idea", "category": "Idea Parking Lot" },
+      { "command": "ideaParkingLot.send", "title": "Send to AI", "category": "Idea Parking Lot", "icon": "$(send)" },
+      { "command": "ideaParkingLot.sendTo", "title": "Send to…", "category": "Idea Parking Lot" },
+      { "command": "ideaParkingLot.copy", "title": "Copy Text", "category": "Idea Parking Lot" },
+      { "command": "ideaParkingLot.done", "title": "Mark Done", "category": "Idea Parking Lot", "icon": "$(check)" },
+      { "command": "ideaParkingLot.drop", "title": "Drop", "category": "Idea Parking Lot", "icon": "$(close)" },
+      { "command": "ideaParkingLot.reopen", "title": "Reopen", "category": "Idea Parking Lot", "icon": "$(debug-restart)" },
+      { "command": "ideaParkingLot.edit", "title": "Edit", "category": "Idea Parking Lot", "icon": "$(edit)" },
+      { "command": "ideaParkingLot.delete", "title": "Delete", "category": "Idea Parking Lot", "icon": "$(trash)" },
+      { "command": "ideaParkingLot.triage", "title": "Ask AI to Prioritize Ideas", "category": "Idea Parking Lot", "icon": "$(sparkle)" },
+      { "command": "ideaParkingLot.openFile", "title": "Open backlog.md", "category": "Idea Parking Lot", "icon": "$(go-to-file)" },
+      { "command": "ideaParkingLot.toggleCompleted", "title": "Show/Hide Done and Dropped", "category": "Idea Parking Lot", "icon": "$(filter)" },
+      { "command": "ideaParkingLot.refresh", "title": "Refresh", "category": "Idea Parking Lot", "icon": "$(refresh)" }
+    ],
+    "menus": {
+      "view/title": [
+        { "command": "ideaParkingLot.add", "when": "view == ideaParkingLot.ideas", "group": "navigation@1" },
+        { "command": "ideaParkingLot.triage", "when": "view == ideaParkingLot.ideas", "group": "navigation@2" },
+        { "command": "ideaParkingLot.toggleCompleted", "when": "view == ideaParkingLot.ideas", "group": "navigation@3" },
+        { "command": "ideaParkingLot.openFile", "when": "view == ideaParkingLot.ideas", "group": "more@1" },
+        { "command": "ideaParkingLot.refresh", "when": "view == ideaParkingLot.ideas", "group": "more@2" }
+      ],
+      "view/item/context": [
+        { "command": "ideaParkingLot.send", "when": "view == ideaParkingLot.ideas && viewItem =~ /idea-(open|pulled)/", "group": "inline@1" },
+        { "command": "ideaParkingLot.done", "when": "view == ideaParkingLot.ideas && viewItem =~ /idea-(open|pulled)/", "group": "inline@2" },
+        { "command": "ideaParkingLot.reopen", "when": "view == ideaParkingLot.ideas && viewItem =~ /idea-(done|dropped)/", "group": "inline@1" },
+        { "command": "ideaParkingLot.send", "when": "view == ideaParkingLot.ideas", "group": "1_send@1" },
+        { "command": "ideaParkingLot.sendTo", "when": "view == ideaParkingLot.ideas", "group": "1_send@2" },
+        { "command": "ideaParkingLot.copy", "when": "view == ideaParkingLot.ideas", "group": "1_send@3" },
+        { "command": "ideaParkingLot.edit", "when": "view == ideaParkingLot.ideas", "group": "2_edit@1" },
+        { "command": "ideaParkingLot.done", "when": "view == ideaParkingLot.ideas && viewItem =~ /idea-(open|pulled)/", "group": "3_status@1" },
+        { "command": "ideaParkingLot.drop", "when": "view == ideaParkingLot.ideas && viewItem =~ /idea-(open|pulled)/", "group": "3_status@2" },
+        { "command": "ideaParkingLot.reopen", "when": "view == ideaParkingLot.ideas && viewItem =~ /idea-(done|dropped|pulled)/", "group": "3_status@3" },
+        { "command": "ideaParkingLot.delete", "when": "view == ideaParkingLot.ideas", "group": "4_delete@1" }
+      ],
+      "editor/context": [
+        { "command": "ideaParkingLot.addFromSelection", "when": "editorHasSelection", "group": "9_ideaParkingLot" }
+      ],
+      "commandPalette": [
+        { "command": "ideaParkingLot.send", "when": "false" },
+        { "command": "ideaParkingLot.sendTo", "when": "false" },
+        { "command": "ideaParkingLot.copy", "when": "false" },
+        { "command": "ideaParkingLot.done", "when": "false" },
+        { "command": "ideaParkingLot.drop", "when": "false" },
+        { "command": "ideaParkingLot.reopen", "when": "false" },
+        { "command": "ideaParkingLot.edit", "when": "false" },
+        { "command": "ideaParkingLot.delete", "when": "false" },
+        { "command": "ideaParkingLot.addFromSelection", "when": "editorHasSelection" }
+      ]
+    },
+    "keybindings": [
+      { "command": "ideaParkingLot.add", "key": "ctrl+alt+shift+i", "mac": "cmd+alt+shift+i" }
+    ],
+    "configuration": {
+      "title": "Idea Parking Lot",
+      "properties": {
+        "ideaParkingLot.sendTo": {
+          "type": "string",
+          "default": "auto",
+          "enum": ["auto", "claude-code", "codex", "copilot", "terminal", "clipboard", "ask"],
+          "enumDescriptions": [
+            "Pick the first AI tool that is installed: Claude Code, then Codex, then Copilot Chat. Falls back to the clipboard.",
+            "Open Claude Code with the idea already typed in. You review it and press Enter.",
+            "Copy the idea and open the Codex sidebar. Paste it with Cmd/Ctrl+V.",
+            "Open GitHub Copilot Chat with the idea already typed in.",
+            "Type the idea into the active terminal without pressing Enter. Works with Claude Code CLI, Codex CLI, Aider, Gemini CLI and others.",
+            "Copy the idea to the clipboard. Use this for Cursor, Windsurf or Kiro's built-in agents.",
+            "Ask every time."
+          ],
+          "markdownDescription": "Where an idea goes when you click it."
+        },
+        "ideaParkingLot.file": {
+          "type": "string",
+          "default": ".ideas/backlog.md",
+          "markdownDescription": "Backlog file, relative to the workspace folder. Keep the default to share it with the Claude Code / Codex plugin and the `idea` CLI."
+        },
+        "ideaParkingLot.showCompleted": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show done and dropped ideas in the list."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "package": "npx --yes @vscode/vsce package",
+    "publish:vscode": "npx --yes @vscode/vsce publish",
+    "publish:openvsx": "npx --yes ovsx publish"
+  }
+}

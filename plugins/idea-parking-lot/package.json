@@ -1,0 +1,11 @@
+{
+  "name": "idea-parking-lot",
+  "version": "0.1.0",
+  "description": "A parking lot for ideas you have while coding with AI. CLI, MCP server and Claude Code / Codex plugin.",
+  "license": "MIT",
+  "bin": { "idea": "bin/idea.js" },
+  "files": ["bin", "lib", "mcp", "scripts", "hooks", "skills", ".claude-plugin", ".codex-plugin", ".mcp.json", "README.md"],
+  "engines": { "node": ">=18" },
+  "keywords": ["ai", "claude-code", "codex", "mcp", "ideas", "backlog", "vibe-coding"],
+  "repository": { "type": "git", "url": "git+https://github.com/venkatv/idea-parking-lot.git", "directory": "plugins/idea-parking-lot" }
+}

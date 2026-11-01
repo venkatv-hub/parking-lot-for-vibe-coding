@@ -1,0 +1,12 @@
+{
+  "name": "idea-parking-lot-monorepo",
+  "private": true,
+  "description": "Idea Parking Lot for Vibe Coding: park ideas while you build with AI, send them in later.",
+  "license": "MIT",
+  "scripts": {
+    "sync": "node scripts/sync-lib.js",
+    "test": "node scripts/sync-lib.js --check && node --test test/all.test.js",
+    "package:vscode": "cd vscode-extension && npx --yes @vscode/vsce package"
+  },
+  "engines": { "node": ">=18" }
+}
